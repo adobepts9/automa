@@ -11,8 +11,11 @@ import { validateBridgeRequest } from '@/remoteBridge/validation';
 import RemoteBridgeWorkflowService from '@/remoteBridge/workflowService';
 
 function getOriginFromSender(sender) {
+  const candidateUrl = sender?.url || sender?.tab?.url || '';
+  if (!candidateUrl) return '';
+
   try {
-    return new URL(sender.url).origin;
+    return new URL(candidateUrl).origin;
   } catch (error) {
     return '';
   }
@@ -45,7 +48,7 @@ class RemoteBridgeHandler {
       });
     }
 
-    const pageOrigin = getOriginFromSender(sender);
+    const pageOrigin = message?.origin || getOriginFromSender(sender);
     if (!isOriginAllowed(pageOrigin, remoteSettings.allowedDomains)) {
       return buildResponse(message.requestId, {
         ok: false,

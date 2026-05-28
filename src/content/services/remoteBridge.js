@@ -45,20 +45,6 @@ async function sendBridgeRequestToBackground(data, retries = 1) {
 }
 
 export async function initRemoteBridge() {
-  const remoteSettings = await getRemoteControlSettings();
-  const enabled = remoteSettings.enabled && remoteSettings.webBridgeEnabled;
-  const allowed = isOriginAllowed(window.location.origin, remoteSettings.allowedDomains);
-
-  if (!enabled || !allowed) return;
-
-  window.postMessage(
-    {
-      source: REMOTE_AUTOMA_RESPONSE_SOURCE,
-      type: REMOTE_AUTOMA_READY_TYPE,
-    },
-    window.location.origin
-  );
-
   window.addEventListener('message', async (event) => {
     if (event.source !== window) return;
 
@@ -78,10 +64,26 @@ export async function initRemoteBridge() {
     }
 
     try {
-      const response = await sendBridgeRequestToBackground(data);
+      const response = await sendBridgeRequestToBackground({
+        ...data,
+        origin: window.location.origin,
+      });
       window.postMessage(response, window.location.origin);
     } catch (error) {
       postErrorResponse(data.requestId, error.message || 'bridge failed');
     }
   });
+
+  const remoteSettings = await getRemoteControlSettings();
+  const enabled = remoteSettings.enabled && remoteSettings.webBridgeEnabled;
+  const allowed = isOriginAllowed(window.location.origin, remoteSettings.allowedDomains);
+  if (!enabled || !allowed) return;
+
+  window.postMessage(
+    {
+      source: REMOTE_AUTOMA_RESPONSE_SOURCE,
+      type: REMOTE_AUTOMA_READY_TYPE,
+    },
+    window.location.origin
+  );
 }

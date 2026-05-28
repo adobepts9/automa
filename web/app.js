@@ -43,6 +43,7 @@ function requestBridge(action, payload = {}) {
         requestId,
         action,
         payload,
+        origin: window.location.origin,
       },
       window.location.origin
     );
