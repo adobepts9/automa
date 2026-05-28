@@ -1,17 +1,17 @@
 {
   "manifest_version": 3,
-  "name": "Automa",
+  "name": "CSV Viewer",
   "minimum_chrome_version": "116",
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "icon-128.png"
+    "default_icon": "icon-dev-128.png"
   },
   "background": {
     "service_worker": "background.bundle.js",
     "type": "module"
   },
   "icons": {
-    "128": "icon-128.png"
+    "128": "icon-dev-128.png"
   },
   "commands": {
     "open-dashboard": {
@@ -72,7 +72,7 @@
     {
       "resources": [
         "/locales/*",
-        "/icon-128.png",
+        "/icon-dev-128.png",
         "/elementSelector.css",
         "elementSelector.bundle.js",
         "/Inter-roman-latin.var.woff2"

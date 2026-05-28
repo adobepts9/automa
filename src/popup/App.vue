@@ -2,11 +2,13 @@
   <template v-if="retrieved">
     <router-view />
     <ui-dialog />
+    <app-lock-overlay />
   </template>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
 import browser from 'webextension-polyfill';
+import AppLockOverlay from '@/components/shared/AppLockOverlay.vue';
 import { useStore } from '@/stores/main';
 import { sendMessage } from '@/utils/message';
 import { useWorkflowStore } from '@/stores/workflow';

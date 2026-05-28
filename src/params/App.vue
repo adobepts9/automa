@@ -7,7 +7,7 @@
       <span class="bg-box-transparent rounded-full p-1 dark:bg-none">
         <img src="@/assets/svg/logo.svg" class="w-10" />
       </span>
-      <p class="ml-4 text-lg font-semibold">Automa</p>
+      <p class="ml-4 text-lg font-semibold">CSV Viewer</p>
     </nav>
     <div class="scroll flex-1 overflow-auto px-4 pb-4">
       <p class="my-4 text-gray-600 dark:text-gray-200">
@@ -119,9 +119,11 @@
         </div>
       </ui-expand>
     </div>
+    <app-lock-overlay />
   </div>
 </template>
 <script setup>
+import AppLockOverlay from '@/components/shared/AppLockOverlay.vue';
 import ParameterCheckboxValue from '@/components/newtab/workflow/edit/Parameter/ParameterCheckboxValue.vue';
 import ParameterInputValue from '@/components/newtab/workflow/edit/Parameter/ParameterInputValue.vue';
 import ParameterJsonValue from '@/components/newtab/workflow/edit/Parameter/ParameterJsonValue.vue';

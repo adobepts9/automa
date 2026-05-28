@@ -65,6 +65,7 @@
       v-model="permissionState.showModal"
       :permissions="permissionState.items"
     />
+    <app-lock-overlay />
   </template>
   <div v-else class="py-8 text-center">
     <ui-spinner color="text-accent" size="28" />
@@ -75,6 +76,7 @@ import iconChrome from '@/assets/svg/logo.svg';
 import iconFirefox from '@/assets/svg/logoFirefox.svg';
 import AppLogs from '@/components/newtab/app/AppLogs.vue';
 import AppSidebar from '@/components/newtab/app/AppSidebar.vue';
+import AppLockOverlay from '@/components/shared/AppLockOverlay.vue';
 import SharedPermissionsModal from '@/components/newtab/shared/SharedPermissionsModal.vue';
 import { useTheme } from '@/composable/theme';
 import dbLogs from '@/db/logs';
@@ -271,8 +273,8 @@ useHead(() => {
     title: 'Dashboard',
     titleTemplate:
       runningWorkflows > 0
-        ? `%s (${runningWorkflows} Workflows Running) - Automa`
-        : '%s - Automa',
+        ? `%s (${runningWorkflows} Workflows Running) - CSV Viewer`
+        : '%s - CSV Viewer',
   };
 });
 
