@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import defu from 'defu';
 import browser from 'webextension-polyfill';
 import deepmerge from 'lodash.merge';
+import { nanoid } from 'nanoid';
 import { fetchGapi, fetchApi } from '@/utils/api';
 
 export const useStore = defineStore('main', {
@@ -27,6 +28,13 @@ export const useStore = defineStore('main', {
         lineType: 'default',
         saveWhenExecute: false,
         snapGrid: { 0: 15, 1: 15 },
+      },
+      remoteControl: {
+        enabled: false,
+        webBridgeEnabled: false,
+        deviceId: `device-${nanoid(16)}`,
+        deviceName: '',
+        allowedDomains: [],
       },
     },
     integrations: {

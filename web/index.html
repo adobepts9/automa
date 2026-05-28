@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remote Automa Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <h1>Remote Automa Dashboard</h1>
+        <p>Detect extension, list workflows, and trigger runs remotely.</p>
+      </header>
+
+      <section class="card">
+        <div class="row">
+          <button id="detectBtn">Detect Extension</button>
+          <button id="statusBtn">Get Status</button>
+          <button id="refreshBtn">Refresh Workflows</button>
+        </div>
+        <div class="row">
+          <span class="label">Bridge status:</span>
+          <span id="bridgeStatus" class="status">waiting</span>
+        </div>
+        <pre id="statusOutput" class="output"></pre>
+      </section>
+
+      <section class="card">
+        <h2>Workflows</h2>
+        <div id="workflows" class="workflows"></div>
+      </section>
+
+      <section class="card">
+        <h2>Run Workflow</h2>
+        <label for="workflowIdInput">Workflow ID</label>
+        <input id="workflowIdInput" placeholder="workflow id..." />
+
+        <label for="payloadInput">Payload (JSON)</label>
+        <textarea
+          id="payloadInput"
+          rows="6"
+          placeholder='{"key":"value"}'
+        ></textarea>
+
+        <div class="row">
+          <label class="inline">
+            <input id="waitInput" type="checkbox" checked />
+            wait for result
+          </label>
+
+          <label class="inline" for="timeoutInput">timeout (ms)</label>
+          <input id="timeoutInput" type="number" value="120000" min="3000" />
+        </div>
+
+        <button id="runBtn">Run Workflow</button>
+        <pre id="runOutput" class="output"></pre>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

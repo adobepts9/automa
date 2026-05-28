@@ -18,6 +18,7 @@ import browser from 'webextension-polyfill';
 import { registerWorkflowTrigger } from '../utils/workflowTrigger';
 import BackgroundEventsListeners from './BackgroundEventsListeners';
 import BackgroundOffscreen from './BackgroundOffscreen';
+import RemoteBridgeHandler from './RemoteBridgeHandler';
 import BackgroundUtils from './BackgroundUtils';
 import BackgroundWorkflowUtils from './BackgroundWorkflowUtils';
 
@@ -128,6 +129,9 @@ message.on('debugger:type', ({ tabId, commands, delay }) => {
 });
 
 message.on('get:sender', (_, sender) => sender);
+message.on('remote-bridge:request', (data, sender) =>
+  RemoteBridgeHandler.handleRequest(data, sender)
+);
 message.on('get:file', (path) => getFile(path));
 message.on('get:tab-screenshot', (options, sender) =>
   browser.tabs.captureVisibleTab(sender.tab.windowId, options)

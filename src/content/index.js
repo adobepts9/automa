@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid';
 import browser from 'webextension-polyfill';
 import blocksHandler from './blocksHandler';
 import initCommandPalette from './commandPalette';
+import { initRemoteBridge } from './services/remoteBridge';
 import handleSelector, {
   getDocumentCtx,
   queryElements,
@@ -193,6 +194,9 @@ async function messageListener({ data, source }) {
   if (window.isAutomaInjected) return;
 
   initCommandPalette();
+  initRemoteBridge().catch((error) => {
+    console.error('remote bridge init failed', error);
+  });
 
   let contextElement = null;
   let $ctxLink = '';
