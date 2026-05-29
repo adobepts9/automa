@@ -113,7 +113,31 @@
           </p>
         </div>
       </ui-list-item>
+      <ui-list-item small>
+        <ui-switch v-model="remoteControl.cloudRelayEnabled" />
+        <div class="ml-4 flex-1">
+          <p class="leading-tight">Cloud Relay</p>
+          <p class="text-sm leading-tight text-gray-600 dark:text-gray-200">
+            Connect this device to the internet relay so any browser can control
+            it from the web dashboard.
+          </p>
+        </div>
+      </ui-list-item>
     </ui-list>
+
+    <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <ui-input
+        v-model="remoteControl.relayUrl"
+        label="Relay URL"
+        placeholder="wss://relay.example.com"
+      />
+      <ui-input
+        v-model="remoteControl.relaySecret"
+        label="Relay Secret"
+        type="password"
+        placeholder="shared secret"
+      />
+    </div>
 
     <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
       <ui-input
@@ -153,6 +177,7 @@ import { useI18n } from 'vue-i18n';
 import { useStore } from '@/stores/main';
 import { useTheme } from '@/composable/theme';
 import { nanoid } from 'nanoid';
+import { sendMessage } from '@/utils/message';
 import { supportLocales } from '@/utils/shared';
 
 const deleteLogDays = ['never', 7, 14, 30, 60, 120];
@@ -166,6 +191,9 @@ const settings = computed(() => store.settings);
 const remoteControl = ref({
   enabled: false,
   webBridgeEnabled: false,
+  cloudRelayEnabled: false,
+  relayUrl: '',
+  relaySecret: '',
   deviceId: '',
   deviceName: '',
   allowedDomains: [],
@@ -203,12 +231,23 @@ function syncRemoteSettings() {
 
 function refreshRemoteStatus() {
   const mode = remoteControl.value.enabled
-    ? remoteControl.value.webBridgeEnabled
-      ? 'enabled'
-      : 'bridge-off'
+    ? remoteControl.value.cloudRelayEnabled
+      ? 'cloud'
+      : remoteControl.value.webBridgeEnabled
+        ? 'local-bridge'
+        : 'bridge-off'
     : 'disabled';
   const domains = parseAllowedDomains(allowedDomainsText.value).length;
   remoteStatus.value = `${mode}, ${domains} domain(s), ${new Date().toLocaleTimeString()}`;
+  syncCloudRelay();
+}
+
+async function syncCloudRelay() {
+  try {
+    await sendMessage('remote-relay:sync');
+  } catch {
+    // background may not be ready yet
+  }
 }
 
 watch(
@@ -227,6 +266,9 @@ onMounted(() => {
   remoteControl.value = {
     enabled: Boolean(settings.value.remoteControl?.enabled),
     webBridgeEnabled: Boolean(settings.value.remoteControl?.webBridgeEnabled),
+    cloudRelayEnabled: Boolean(settings.value.remoteControl?.cloudRelayEnabled),
+    relayUrl: settings.value.remoteControl?.relayUrl || '',
+    relaySecret: settings.value.remoteControl?.relaySecret || '',
     deviceId: settings.value.remoteControl?.deviceId || '',
     deviceName: settings.value.remoteControl?.deviceName || '',
     allowedDomains: settings.value.remoteControl?.allowedDomains || [],

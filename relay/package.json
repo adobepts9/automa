@@ -1,0 +1,17 @@
+{
+  "name": "automa-cloud-relay",
+  "version": "1.0.0",
+  "description": "Standalone WebSocket relay for CSV Viewer / Automa remote dashboard (multi-device)",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

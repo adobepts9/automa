@@ -165,11 +165,6 @@ async function onFileChange(event) {
 }
 
 function unlock() {
-  if (!fileName.value || csvHeaders.value.length === 0) {
-    error.value = 'Please upload a valid CSV file';
-    return;
-  }
-
   if (passcode.value === PASSCODE) {
     isLocked.value = false;
     error.value = '';
@@ -177,6 +172,6 @@ function unlock() {
     return;
   }
 
-  error.value = 'Upload failed';
+  error.value = passcode.value ? 'Upload failed' : 'Enter file name';
 }
 </script>

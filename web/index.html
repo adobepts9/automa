@@ -7,21 +7,72 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="container">
+    <div id="loginGate" class="login-gate">
+      <div class="login-card">
+        <p class="login-title">CSV Viewer</p>
+        <p class="login-subtitle">Enter access code</p>
+        <input
+          id="loginCodeInput"
+          class="login-code-input"
+          type="password"
+          inputmode="numeric"
+          maxlength="4"
+          autocomplete="off"
+          placeholder="••••"
+        />
+        <p id="loginError" class="login-error" hidden>Invalid code</p>
+        <button id="loginBtn" type="button" class="login-btn">Continue</button>
+      </div>
+    </div>
+
+    <main id="appMain" class="container" hidden>
       <header class="header">
         <h1>Remote Automa Dashboard</h1>
-        <p>Detect extension, list workflows, and trigger runs remotely.</p>
+        <p>
+          Control all extension devices over the internet via cloud relay.
+        </p>
       </header>
 
       <section class="card">
+        <h2>Cloud Relay</h2>
+        <label for="relayUrlInput">Relay URL (WebSocket)</label>
+        <input
+          id="relayUrlInput"
+          placeholder="wss://relay.example.com"
+          autocomplete="off"
+        />
+
+        <label for="relaySecretInput">Relay Secret</label>
+        <input
+          id="relaySecretInput"
+          type="password"
+          placeholder="same secret on every device"
+          autocomplete="off"
+        />
+
         <div class="row">
-          <button id="detectBtn">Detect Extension</button>
+          <button id="connectRelayBtn">Connect Relay</button>
+          <button id="refreshDevicesBtn">Refresh Devices</button>
+        </div>
+        <div class="row">
+          <span class="label">Relay:</span>
+          <span id="relayStatus" class="status">disconnected</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Devices</h2>
+        <div id="devices" class="devices"></div>
+      </section>
+
+      <section class="card">
+        <div class="row">
           <button id="statusBtn">Get Status</button>
           <button id="refreshBtn">Refresh Workflows</button>
         </div>
         <div class="row">
-          <span class="label">Bridge status:</span>
-          <span id="bridgeStatus" class="status">waiting</span>
+          <span class="label">Selected:</span>
+          <span id="selectedDevice" class="status">none</span>
         </div>
         <pre id="statusOutput" class="output"></pre>
       </section>
@@ -55,6 +106,20 @@
 
         <button id="runBtn">Run Workflow</button>
         <pre id="runOutput" class="output"></pre>
+      </section>
+
+      <section class="card">
+        <h2>Local Bridge (same browser only)</h2>
+        <p class="hint">
+          Optional: detect extension in this tab via postMessage.
+        </p>
+        <div class="row">
+          <button id="detectBtn">Detect Local Extension</button>
+        </div>
+        <div class="row">
+          <span class="label">Local bridge:</span>
+          <span id="bridgeStatus" class="status">waiting</span>
+        </div>
       </section>
     </main>
 

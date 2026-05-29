@@ -7,6 +7,9 @@ const defaultSettings = () => ({
   remoteControl: {
     enabled: false,
     webBridgeEnabled: false,
+    cloudRelayEnabled: false,
+    relayUrl: '',
+    relaySecret: '',
     deviceId: `device-${nanoid(16)}`,
     deviceName: '',
     allowedDomains: [],

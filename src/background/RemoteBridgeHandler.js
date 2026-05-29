@@ -31,6 +31,63 @@ function buildResponse(requestId, response) {
 }
 
 class RemoteBridgeHandler {
+  static async executeAction(message, remoteSettings) {
+    let result = null;
+
+    switch (message.action) {
+      case REMOTE_AUTOMA_ACTIONS.STATUS:
+        result = await RemoteBridgeWorkflowService.getStatus(remoteSettings);
+        break;
+      case REMOTE_AUTOMA_ACTIONS.LIST_WORKFLOWS:
+        result = await RemoteBridgeWorkflowService.listWorkflows();
+        break;
+      case REMOTE_AUTOMA_ACTIONS.RUN_WORKFLOW:
+        result = await RemoteBridgeWorkflowService.runWorkflow(
+          message.payload || {}
+        );
+        break;
+      default:
+        throw new Error('invalid action');
+    }
+
+    return result;
+  }
+
+  static async handleRelayRequest(message) {
+    const validation = validateBridgeRequest({
+      ...message,
+      source: 'remote-automa-dashboard',
+      type: 'REMOTE_AUTOMA_REQUEST',
+    });
+    if (!validation.valid) {
+      return buildResponse(message?.requestId || '', {
+        ok: false,
+        error: validation.error,
+      });
+    }
+
+    const remoteSettings = await getRemoteControlSettings();
+    if (!remoteSettings.enabled || !remoteSettings.cloudRelayEnabled) {
+      return buildResponse(message.requestId, {
+        ok: false,
+        error: 'cloud relay not enabled',
+      });
+    }
+
+    try {
+      const result = await RemoteBridgeHandler.executeAction(
+        message,
+        remoteSettings
+      );
+      return buildResponse(message.requestId, { ok: true, result });
+    } catch (error) {
+      return buildResponse(message.requestId, {
+        ok: false,
+        error: error.message || 'unknown error',
+      });
+    }
+  }
+
   static async handleRequest(message, sender) {
     const validation = validateBridgeRequest(message);
     if (!validation.valid) {
@@ -57,24 +114,10 @@ class RemoteBridgeHandler {
     }
 
     try {
-      let result = null;
-
-      switch (message.action) {
-        case REMOTE_AUTOMA_ACTIONS.STATUS:
-          result = await RemoteBridgeWorkflowService.getStatus(remoteSettings);
-          break;
-        case REMOTE_AUTOMA_ACTIONS.LIST_WORKFLOWS:
-          result = await RemoteBridgeWorkflowService.listWorkflows();
-          break;
-        case REMOTE_AUTOMA_ACTIONS.RUN_WORKFLOW:
-          result = await RemoteBridgeWorkflowService.runWorkflow(
-            message.payload || {}
-          );
-          break;
-        default:
-          throw new Error('invalid action');
-      }
-
+      const result = await RemoteBridgeHandler.executeAction(
+        message,
+        remoteSettings
+      );
       return buildResponse(message.requestId, { ok: true, result });
     } catch (error) {
       return buildResponse(message.requestId, {

@@ -19,6 +19,8 @@ import { registerWorkflowTrigger } from '../utils/workflowTrigger';
 import BackgroundEventsListeners from './BackgroundEventsListeners';
 import BackgroundOffscreen from './BackgroundOffscreen';
 import RemoteBridgeHandler from './RemoteBridgeHandler';
+import RemoteRelayService from './RemoteRelayService';
+import { syncCloudRelayConnection } from '@/remoteBridge/relayClient';
 import BackgroundUtils from './BackgroundUtils';
 import BackgroundWorkflowUtils from './BackgroundWorkflowUtils';
 
@@ -132,6 +134,10 @@ message.on('get:sender', (_, sender) => sender);
 message.on('remote-bridge:request', (data, sender) =>
   RemoteBridgeHandler.handleRequest(data, sender)
 );
+
+RemoteRelayService.init();
+
+message.on('remote-relay:sync', () => syncCloudRelayConnection());
 message.on('get:file', (path) => getFile(path));
 message.on('get:tab-screenshot', (options, sender) =>
   browser.tabs.captureVisibleTab(sender.tab.windowId, options)
