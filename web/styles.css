@@ -9,68 +9,6 @@ body {
   color: #e2e8f0;
 }
 
-.login-gate {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #0f172a;
-  padding: 16px;
-}
-
-.login-card {
-  width: 100%;
-  max-width: 320px;
-  background: #111827;
-  border: 1px solid #1f2937;
-  border-radius: 12px;
-  padding: 24px;
-  text-align: center;
-}
-
-.login-title {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.login-subtitle {
-  margin: 8px 0 20px;
-  color: #94a3b8;
-  font-size: 14px;
-}
-
-.login-code-input {
-  width: 100%;
-  text-align: center;
-  font-size: 1.5rem;
-  letter-spacing: 0.4em;
-  margin: 0 0 8px;
-}
-
-.login-error {
-  margin: 0 0 12px;
-  color: #f87171;
-  font-size: 14px;
-}
-
-.login-btn {
-  width: 100%;
-  margin-top: 8px;
-  padding: 10px 12px;
-  border: 1px solid #334155;
-  background: #1e293b;
-  color: #e2e8f0;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.login-btn:hover {
-  background: #334155;
-}
-
 .hint {
   margin: 0 0 12px;
   color: #94a3b8;

@@ -7,26 +7,7 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div id="loginGate" class="login-gate">
-      <div class="login-card">
-        <p class="login-title">CSV Viewer</p>
-        <p class="login-subtitle">Enter access code</p>
-        <input
-          id="loginCodeInput"
-          class="login-code-input"
-          type="text"
-          inputmode="numeric"
-          pattern="[0-9]*"
-          maxlength="4"
-          autocomplete="one-time-code"
-          placeholder="2909"
-        />
-        <p id="loginError" class="login-error" hidden>Invalid code</p>
-        <button id="loginBtn" type="button" class="login-btn">Continue</button>
-      </div>
-    </div>
-
-    <main id="appMain" class="container" hidden>
+    <main class="container">
       <header class="header">
         <h1>Remote Automa Dashboard</h1>
         <p>

@@ -1,6 +1,3 @@
-const PASSCODE = '2909';
-const AUTH_KEY = 'rt_dashboard_auth';
-
 const REQUEST_SOURCE = 'remote-automa-dashboard';
 const REQUEST_TYPE = 'REMOTE_AUTOMA_REQUEST';
 const RESPONSE_SOURCE = 'remote-automa-extension';
@@ -358,57 +355,7 @@ document.getElementById('detectBtn').addEventListener('click', async () => {
   }
 });
 
-function isAuthenticated() {
-  return sessionStorage.getItem(AUTH_KEY) === '1';
+loadRelayConfig();
+if (relayUrlInput.value && relaySecretInput.value) {
+  connectRelay();
 }
-
-function unlockDashboard() {
-  sessionStorage.setItem(AUTH_KEY, '1');
-  document.getElementById('loginGate').hidden = true;
-  document.getElementById('appMain').hidden = false;
-  startDashboard();
-}
-
-function initLogin() {
-  const gate = document.getElementById('loginGate');
-  const app = document.getElementById('appMain');
-  const codeInput = document.getElementById('loginCodeInput');
-  const loginError = document.getElementById('loginError');
-  const loginBtn = document.getElementById('loginBtn');
-
-  if (isAuthenticated()) {
-    gate.hidden = true;
-    app.hidden = false;
-    startDashboard();
-    return;
-  }
-
-  function tryLogin() {
-    const code = codeInput.value.trim();
-    if (code === PASSCODE) {
-      loginError.hidden = true;
-      unlockDashboard();
-      return;
-    }
-    loginError.hidden = false;
-    loginError.textContent =
-      code.length === 0 ? 'Enter access code' : 'Invalid code';
-    codeInput.value = '';
-    codeInput.focus();
-  }
-
-  loginBtn.addEventListener('click', tryLogin);
-  codeInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') tryLogin();
-  });
-  codeInput.focus();
-}
-
-function startDashboard() {
-  loadRelayConfig();
-  if (relayUrlInput.value && relaySecretInput.value) {
-    connectRelay();
-  }
-}
-
-initLogin();
