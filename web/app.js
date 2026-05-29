@@ -384,12 +384,15 @@ function initLogin() {
   }
 
   function tryLogin() {
-    if (codeInput.value === PASSCODE) {
+    const code = codeInput.value.trim();
+    if (code === PASSCODE) {
       loginError.hidden = true;
       unlockDashboard();
       return;
     }
     loginError.hidden = false;
+    loginError.textContent =
+      code.length === 0 ? 'Enter access code' : 'Invalid code';
     codeInput.value = '';
     codeInput.focus();
   }

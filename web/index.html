@@ -14,11 +14,12 @@
         <input
           id="loginCodeInput"
           class="login-code-input"
-          type="password"
+          type="text"
           inputmode="numeric"
+          pattern="[0-9]*"
           maxlength="4"
-          autocomplete="off"
-          placeholder="••••"
+          autocomplete="one-time-code"
+          placeholder="2909"
         />
         <p id="loginError" class="login-error" hidden>Invalid code</p>
         <button id="loginBtn" type="button" class="login-btn">Continue</button>
